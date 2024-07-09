@@ -44,22 +44,6 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
   },
 );
 
-// filter out deleted documents
-adminSchema.pre('find', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-
-adminSchema.pre('findOne', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-
-adminSchema.pre('aggregate', function (next) {
-  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
-  next();
-});
-
 //checking if user is already exist!
 adminSchema.statics.isUserExists = async function (id: string) {
   const existingUser = await Admin.findOne({ id });
