@@ -1,6 +1,14 @@
 import { z } from "zod";
 
-export const createOrderedProductsValidationSchema = z
+// create schemas
+const createCustomerInfoValidationSchema = z.object({
+  fullName: z.string(),
+  email: z.string(),
+  phone: z.string(),
+  shippingAddress: z.string(),
+});
+
+const createOrderedProductsValidationSchema = z
   .object({
     product: z.string(),
     name: z.string(),
@@ -13,17 +21,28 @@ export const createOrderedProductsValidationSchema = z
 export const createOrderValidationSchema = z.object({
   body: z.object({
     user: z.string(),
+    customerInfo: createCustomerInfoValidationSchema,
     products: createOrderedProductsValidationSchema,
     productsTotalPrice: z.number(),
     shippingCost: z.number(),
     couponDiscount: z.number(),
+    grandTotal: z.number(),
     paymentMethod: z.string(),
     isPaid: z.boolean(),
-    isDeleted: z.boolean(),
   }),
 });
 
-export const updateOrderedProductsValidationSchema = z
+// update schemas
+const updateCustomerInfoValidationSchema = z
+  .object({
+    fullName: z.string().optional(),
+    email: z.string().optional(),
+    phone: z.string().optional(),
+    shippingAddress: z.string().optional(),
+  })
+  .optional();
+
+const updateOrderedProductsValidationSchema = z
   .object({
     product: z.string().optional(),
     name: z.string().optional(),
@@ -36,13 +55,14 @@ export const updateOrderedProductsValidationSchema = z
 export const updateOrderValidationSchema = z.object({
   body: z.object({
     user: z.string().optional(),
-    products: createOrderedProductsValidationSchema,
+    customerInfo: updateCustomerInfoValidationSchema,
+    products: updateOrderedProductsValidationSchema,
     productsTotalPrice: z.number().optional(),
     shippingCost: z.number().optional(),
     couponDiscount: z.number().optional(),
+    grandTotal: z.number().optional(),
     paymentMethod: z.string().optional(),
     isPaid: z.boolean().optional(),
-    isDeleted: z.boolean().optional(),
   }),
 });
 

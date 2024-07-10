@@ -6,6 +6,7 @@ import { TOrder } from "./order.interface";
 import { Order } from "./order.model";
 import { OrderSearchableFields } from "./order.constant";
 import mongoose from "mongoose";
+import { Product } from "../Product/product.model";
 
 const createOrderIntoDB = async (payload: Partial<TOrder>) => {
   const session = await mongoose.startSession();
@@ -13,10 +14,24 @@ const createOrderIntoDB = async (payload: Partial<TOrder>) => {
   try {
     session.startTransaction();
 
+    payload?.products?.forEach(async (item) => {
+      const id = item.product;
+      const quantity = item.quantity;
+
+      await Product.updateOne(
+        {
+          _id: id,
+        },
+        {
+          $inc: {
+            stock: -quantity,
+          },
+        }
+      );
+    });
+
     const newOrder = await Order.create(payload);
 
-
-    
     await session.commitTransaction();
     await session.endSession();
     return newOrder;

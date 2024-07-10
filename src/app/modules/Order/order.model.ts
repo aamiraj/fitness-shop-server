@@ -1,5 +1,5 @@
 import mongoose, { Schema, model } from "mongoose";
-import { TOrderedProducts, TOrder } from "./order.interface";
+import { TOrderedProducts, TOrder, TCustomerInfo } from "./order.interface";
 
 const orderedProductsSchema = new Schema<TOrderedProducts>(
   {
@@ -24,12 +24,36 @@ const orderedProductsSchema = new Schema<TOrderedProducts>(
   }
 );
 
+const customerInfoSchema = new Schema<TCustomerInfo>(
+  {
+    fullName: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    shippingAddress: {
+      type: String,
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
 const orderSchema = new Schema<TOrder>(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: [true, "User id is required"],
+    },
+    customerInfo: {
+      type: customerInfoSchema,
+      required: [true, "Customer info is required"],
     },
     products: [
       {
@@ -40,6 +64,7 @@ const orderSchema = new Schema<TOrder>(
     productsTotalPrice: { type: Number },
     shippingCost: { type: Number },
     couponDiscount: { type: Number },
+    grandTotal: { type: Number },
     paymentMethod: { type: String },
     isPaid: {
       type: Boolean,
