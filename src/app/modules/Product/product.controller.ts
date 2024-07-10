@@ -3,6 +3,17 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { ProductServices } from "./product.service";
 
+const createProduct = catchAsync(async (req, res) => {
+  const result = await ProductServices.createProductIntoDB(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Product is created succesfully",
+    data: result,
+  });
+});
+
 const getSingleProduct = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await ProductServices.getSingleProductFromDB(id);
@@ -53,6 +64,7 @@ const deleteProduct = catchAsync(async (req, res) => {
 });
 
 export const ProductControllers = {
+  createProduct,
   getAllProducts,
   getSingleProduct,
   deleteProduct,

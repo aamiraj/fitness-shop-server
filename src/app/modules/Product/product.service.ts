@@ -6,6 +6,12 @@ import { ProductSearchableFields } from "./product.constant";
 import { TProduct } from "./product.interface";
 import { Product } from "./product.model";
 
+const createProductIntoDB = async (payload: Partial<TProduct>) => {
+  const newProduct = await Product.create(payload);
+
+  return newProduct;
+};
+
 const getAllProductsFromDB = async (query: Record<string, unknown>) => {
   const productQuery = new QueryBuilder(Product.find(), query)
     .search(ProductSearchableFields)
@@ -50,6 +56,7 @@ const deleteProductFromDB = async (id: string) => {
 };
 
 export const ProductServices = {
+  createProductIntoDB,
   getAllProductsFromDB,
   getSingleProductFromDB,
   updateProductIntoDB,

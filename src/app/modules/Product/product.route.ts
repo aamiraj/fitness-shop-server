@@ -3,19 +3,23 @@ import auth from "../../middlewares/auth";
 import validateRequest from "../../middlewares/validateRequest";
 import { USER_ROLE } from "../User/user.constant";
 import { ProductControllers } from "./product.controller";
-import { updateProductValidationSchema } from "./product.validation";
+import {
+  ProductValidations,
+  updateProductValidationSchema,
+} from "./product.validation";
 
 const router = express.Router();
 
-router.get(
+router.post(
   "/",
-  ProductControllers.getAllProducts
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
+  validateRequest(ProductValidations.createProductValidationSchema),
+  ProductControllers.createProduct
 );
 
-router.get(
-  "/:id",
-  ProductControllers.getSingleProduct
-);
+router.get("/", ProductControllers.getAllProducts);
+
+router.get("/:id", ProductControllers.getSingleProduct);
 
 router.patch(
   "/:id",
