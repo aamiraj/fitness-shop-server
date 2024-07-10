@@ -7,11 +7,6 @@ import config from "../../config";
 
 const userSchema = new Schema<TUser, UserModel>(
   {
-    id: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     name: {
       type: String,
       required: true,
@@ -70,8 +65,8 @@ userSchema.post("save", function (doc, next) {
   next();
 });
 
-userSchema.statics.isUserExistsByCustomId = async function (id: string) {
-  return await User.findOne({ id }).select("+password");
+userSchema.statics.isUserExists = async function (email: string) {
+  return await User.findOne({ email }).select("+password");
 };
 
 userSchema.statics.isPasswordMatched = async function (

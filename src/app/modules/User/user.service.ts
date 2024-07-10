@@ -21,7 +21,7 @@ const createCustomerIntoDB = async (payload: {
   };
 
   // create a customer
-  const newCustomer = await User.create(customerData); // array
+  const newCustomer = await User.create(customerData);
 
   if (!newCustomer?._id) {
     throw new AppError(httpStatus.BAD_REQUEST, "Failed to create customer.");
