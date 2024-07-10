@@ -21,7 +21,7 @@ const customerSchema = new Schema<TCustomer, CustomerModel>({
     },
     required: [true, "Gender is required"],
   },
-  dateOfBirth: { type: Date },
+  dateOfBirth: { type: Date, required: [true, "Date of birth is required"] },
   contactNo: { type: String, required: [true, "Contact number is required"] },
   emergencyContactNo: {
     type: String,
