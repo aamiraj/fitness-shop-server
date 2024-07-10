@@ -39,4 +39,15 @@ const productSchema = new Schema<TProduct>(
   }
 );
 
+// filter out the deleted products
+productSchema.pre("find", function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+productSchema.pre("findOne", function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
 export const Product = model<TProduct>("Product", productSchema);

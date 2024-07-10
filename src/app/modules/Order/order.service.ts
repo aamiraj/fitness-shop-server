@@ -5,6 +5,27 @@ import QueryBuilder from "../../builder/QueryBuilder";
 import { TOrder } from "./order.interface";
 import { Order } from "./order.model";
 import { OrderSearchableFields } from "./order.constant";
+import mongoose from "mongoose";
+
+const createOrderIntoDB = async (payload: Partial<TOrder>) => {
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    const newOrder = await Order.create(payload);
+
+
+    
+    await session.commitTransaction();
+    await session.endSession();
+    return newOrder;
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new AppError(httpStatus.BAD_REQUEST, "Order did not created.");
+  }
+};
 
 const getAllOrdersFromDB = async (query: Record<string, unknown>) => {
   const orderQuery = new QueryBuilder(Order.find(), query)
@@ -50,6 +71,7 @@ const deleteOrderFromDB = async (id: string) => {
 };
 
 export const OrderServices = {
+  createOrderIntoDB,
   getAllOrdersFromDB,
   getSingleOrderFromDB,
   updateOrderIntoDB,

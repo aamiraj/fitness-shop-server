@@ -3,9 +3,19 @@ import auth from "../../middlewares/auth";
 import validateRequest from "../../middlewares/validateRequest";
 import { USER_ROLE } from "../User/user.constant";
 import { OrderControllers } from "./order.controller";
-import { updateOrderValidationSchema } from "./order.validation";
+import {
+  OrderValidations,
+  updateOrderValidationSchema,
+} from "./order.validation";
 
 const router = express.Router();
+
+router.post(
+  "/",
+  auth(USER_ROLE.customer),
+  validateRequest(OrderValidations.createOrderValidationSchema),
+  OrderControllers.createOrder
+);
 
 router.get(
   "/",

@@ -40,8 +40,8 @@ const getAllProducts = catchAsync(async (req, res) => {
 
 const updateProduct = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const { customer } = req.body;
-  const result = await ProductServices.updateProductIntoDB(id, customer);
+  const product = req.body;
+  const result = await ProductServices.updateProductIntoDB(id, product);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

@@ -3,6 +3,17 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { OrderServices } from "./order.service";
 
+const createOrder = catchAsync(async (req, res) => {
+  const result = await OrderServices.createOrderIntoDB(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Order is created succesfully",
+    data: result,
+  });
+});
+
 const getSingleOrder = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await OrderServices.getSingleOrderFromDB(id);
@@ -53,6 +64,7 @@ const deleteOrder = catchAsync(async (req, res) => {
 });
 
 export const OrderControllers = {
+  createOrder,
   getAllOrders,
   getSingleOrder,
   deleteOrder,

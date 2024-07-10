@@ -36,7 +36,7 @@ const getSingleProductFromDB = async (id: string) => {
 const updateProductIntoDB = async (id: string, payload: Partial<TProduct>) => {
   const modifiedUpdatedData: Record<string, unknown> = payload;
 
-  const result = await Product.findByIdAndUpdate({ id }, modifiedUpdatedData, {
+  const result = await Product.findByIdAndUpdate(id, modifiedUpdatedData, {
     new: true,
     runValidators: true,
   });
