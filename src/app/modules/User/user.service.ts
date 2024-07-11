@@ -8,13 +8,13 @@ import { Admin } from "../Admin/admin.model";
 import { Customer } from "../Customer/customer.model";
 
 const createCustomerIntoDB = async (payload: {
-  name: string;
+  fullName: string;
   email: string;
   password: string;
 }) => {
   // create a customer object
   const customerData: Partial<TUser> = {
-    name: payload?.name,
+    fullName: payload?.fullName,
     email: payload?.email,
     password: payload?.password,
     role: "customer",
@@ -31,13 +31,13 @@ const createCustomerIntoDB = async (payload: {
 };
 
 const createAdminIntoDB = async (payload: {
-  name: string;
+  fullName: string;
   email: string;
   password: string;
 }) => {
   // create a admin object
   const AdminData: Partial<TUser> = {
-    name: payload?.name,
+    fullName: payload?.fullName,
     email: payload?.email,
     password: payload?.password,
     role: "admin",

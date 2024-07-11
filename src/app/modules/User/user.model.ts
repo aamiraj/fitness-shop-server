@@ -7,7 +7,7 @@ import config from "../../config";
 
 const userSchema = new Schema<TUser, UserModel>(
   {
-    name: {
+    fullName: {
       type: String,
       required: true,
       unique: true,
