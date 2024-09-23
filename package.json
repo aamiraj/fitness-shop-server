@@ -4,8 +4,8 @@
   "description": "This is a server of an app to buy and sell fitness equipment.",
   "main": "index.js",
   "scripts": {
-    "start:prod": "node ./dist/server.js",
-    "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "serve": "node ./dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
     "lint": "eslint src --ignore-path .gitignore --ext .ts",
     "lint:fix": "npx eslint src --fix",
