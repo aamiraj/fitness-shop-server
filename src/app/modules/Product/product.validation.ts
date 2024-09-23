@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const createProductValidationSchema = z.object({
   body: z.object({
-    name: z.string().min(3).max(20),
+    name: z.string().min(3).max(100),
     price: z.number().nonnegative(),
     description: z.string().optional(),
     images: z.string().array(),
