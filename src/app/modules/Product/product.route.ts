@@ -15,7 +15,7 @@ const router = express.Router();
 
 const uploadImageToCloud = async (
   req: Request,
-  _res: Response,
+  res: Response,
   next: NextFunction
 ) => {
   try {
@@ -23,7 +23,9 @@ const uploadImageToCloud = async (
       const images = await uploadToCloudinary(
         req?.files as Express.Multer.File[]
       );
-      req.body = { images: images, ...JSON.parse(req.body.data) };
+      const data = JSON.parse(req.body.data);
+      data.images = images.concat(data.images);
+      req.body = data;
     }
     next();
   } catch (error) {
@@ -31,6 +33,7 @@ const uploadImageToCloud = async (
   }
 };
 
+//remember to add auth middleware
 router.post(
   "/",
   upload.array("images"),
@@ -52,9 +55,11 @@ router.get("/", ProductControllers.getAllProducts);
 
 router.get("/:id", ProductControllers.getSingleProduct);
 
+// remember to add auth middleware,
 router.patch(
   "/:id",
-  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
+  upload.array("images"),
+  uploadImageToCloud,
   validateRequest(updateProductValidationSchema),
   ProductControllers.updateProduct
 );

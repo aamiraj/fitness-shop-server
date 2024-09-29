@@ -38,8 +38,8 @@ const updateProductIntoDB = async (id: string, payload: Partial<TProduct>) => {
 
   const result = await Product.findByIdAndUpdate(id, modifiedUpdatedData, {
     new: true,
-    runValidators: true,
   });
+
   return result;
 };
 

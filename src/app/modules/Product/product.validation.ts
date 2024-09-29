@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const createProductValidationSchema = z.object({
   body: z.object({
-    name: z.string().min(3).max(100),
+    name: z.string().min(5).max(100),
     price: z.number().nonnegative(),
     description: z.string().optional(),
     images: z.string().array(),
@@ -13,11 +13,11 @@ export const createProductValidationSchema = z.object({
 
 export const updateProductValidationSchema = z.object({
   body: z.object({
-    name: z.string().min(3).max(20).optional(),
+    name: z.string().min(5).max(100).optional(),
     price: z.number().nonnegative().optional(),
-    description: z.string().optional(),
+    description: z.string().min(10).max(1000).optional(),
     images: z.string().array().optional(),
-    category: z.string().optional(),
+    category: z.string().min(3).max(20).optional(),
     stock: z.number().nonnegative().optional(),
   }),
 });

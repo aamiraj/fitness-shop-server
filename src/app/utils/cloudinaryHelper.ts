@@ -61,4 +61,6 @@ const removeImage = (path: string) => {
       return;
     }
   });
+
+  console.log("Image deleted successfully.");
 };
