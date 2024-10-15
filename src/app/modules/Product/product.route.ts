@@ -33,31 +33,22 @@ const uploadImageToCloud = async (
   }
 };
 
-//remember to add auth middleware
 router.post(
   "/",
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   upload.array("images"),
   uploadImageToCloud,
   validateRequest(ProductValidations.createProductValidationSchema),
   ProductControllers.createProduct
 );
 
-// router.post(
-//   "/",
-//   auth(USER_ROLE.superAdmin, USER_ROLE.admin),
-//   upload.array("images"),
-//   uploadImageToCloud,
-//   validateRequest(ProductValidations.createProductValidationSchema),
-//   ProductControllers.createProduct
-// );
-
 router.get("/", ProductControllers.getAllProducts);
 
 router.get("/:id", ProductControllers.getSingleProduct);
 
-// remember to add auth middleware,
 router.patch(
   "/:id",
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   upload.array("images"),
   uploadImageToCloud,
   validateRequest(updateProductValidationSchema),

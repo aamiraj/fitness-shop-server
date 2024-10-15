@@ -6,6 +6,7 @@ import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import { Admin } from "../Admin/admin.model";
 import { Customer } from "../Customer/customer.model";
+import mongoose from "mongoose";
 
 const createCustomerIntoDB = async (payload: {
   fullName: string;
@@ -20,14 +21,30 @@ const createCustomerIntoDB = async (payload: {
     role: "customer",
   };
 
-  // create a customer
-  const newCustomer = await User.create(customerData);
+  const session = await mongoose.startSession();
 
-  if (!newCustomer?._id) {
-    throw new AppError(httpStatus.BAD_REQUEST, "Failed to create customer.");
+  try {
+    session.startTransaction();
+
+    // create a customer
+    const newUser = await User.create([customerData], { session });
+
+    const newCustomer = await Customer.create(
+      [{ user: newUser[0]?._id, fullName: payload?.fullName }],
+      { session }
+    );
+
+    if (!newCustomer[0]?._id) {
+      throw new AppError(httpStatus.BAD_REQUEST, "Failed to create customer.");
+    }
+    await session.commitTransaction();
+    await session.endSession();
+    return newCustomer;
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error("Customer did not created.");
   }
-
-  return newCustomer;
 };
 
 const createAdminIntoDB = async (payload: {
@@ -56,10 +73,10 @@ const createAdminIntoDB = async (payload: {
 const getMe = async (userId: string, role: string) => {
   let result = null;
   if (role === "customer") {
-    result = await Customer.findOne({ id: userId }).populate("user");
+    result = await Customer.findOne({ user: userId }).populate("user");
   }
   if (role === "admin") {
-    result = await Admin.findOne({ id: userId }).populate("user");
+    result = await Admin.findOne({ user: userId }).populate("user");
   }
 
   return result;

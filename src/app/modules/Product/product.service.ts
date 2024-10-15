@@ -15,7 +15,8 @@ const createProductIntoDB = async (payload: Partial<TProduct>) => {
 const getAllProductsFromDB = async (query: Record<string, unknown>) => {
   const productQuery = new QueryBuilder(Product.find(), query)
     .search(ProductSearchableFields)
-    .filter()
+    .filterbyCategory()
+    .queryPriceRange()
     .sort()
     .paginate()
     .fields();

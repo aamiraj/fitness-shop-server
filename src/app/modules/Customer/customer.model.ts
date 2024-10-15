@@ -20,21 +20,17 @@ const customerSchema = new Schema<TCustomer, CustomerModel>(
         values: Gender,
         message: "{VALUE} is not a valid gender",
       },
-      required: [true, "Gender is required"],
     },
-    dateOfBirth: { type: Date, required: [true, "Date of birth is required"] },
-    contactNo: { type: String, required: [true, "Contact number is required"] },
+    dateOfBirth: { type: Date },
+    contactNo: { type: String },
     emergencyContactNo: {
       type: String,
-      required: [true, "Emergency contact number is required"],
     },
     shippingAddress: {
       type: String,
-      required: [true, "Present address is required"],
     },
     billingAddress: {
       type: String,
-      required: [true, "Permanent address is required"],
     },
     profileImg: { type: String, default: "" },
     isDeleted: {

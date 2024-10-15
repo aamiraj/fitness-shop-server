@@ -28,7 +28,6 @@ export const createOrderValidationSchema = z.object({
     couponDiscount: z.number(),
     grandTotal: z.number(),
     paymentMethod: z.string(),
-    isPaid: z.boolean(),
   }),
 });
 
