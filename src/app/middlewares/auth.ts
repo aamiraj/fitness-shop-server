@@ -13,7 +13,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
 
     // checking if the token is missing
     if (!token) {
-      throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized!");
+      throw new AppError(httpStatus.FORBIDDEN, "You are not allowed!");
     }
 
     // checking if the given token is valid
@@ -26,9 +26,9 @@ const auth = (...requiredRoles: TUserRole[]) => {
 
     // checking if the user is exist
     const user = await User.isUserExists(email);
-    
+
     if (!user) {
-      throw new AppError(httpStatus.NOT_FOUND, "This user is not found !");
+      throw new AppError(httpStatus.NOT_FOUND, "This user is not found!");
     }
 
     // checking if the user is already deleted
@@ -52,11 +52,11 @@ const auth = (...requiredRoles: TUserRole[]) => {
         iat as number
       )
     ) {
-      throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized !");
+      throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized!");
     }
 
     if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized !");
+      throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized!");
     }
 
     req.user = { userId: user?._id, ...decoded };
